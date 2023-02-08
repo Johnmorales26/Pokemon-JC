@@ -4,7 +4,7 @@ Esta aplicación esta desarrollada en Android Studio con Jetpack Compose.
 Tambien dentro de ella se realiza el consumo de la PokéApi la cual nos brinda la información de la aplicación.
 
 <p align="center">
-  <img src="C:\Users\JohnT\Documents\JC_Course\Pokemon\PokedexJC\app\src\main\res\mipmap-hdpi\ic_launcher_foreground.png" width="200" title="Icon Aplication">
+  <img src="https://github.com/Johnmorales26/Pokemon-JC/blob/main/PokedexJC/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png" width="200" title="Icon Aplication">
 </p>
 
 ### Pre-requisitos 📋
@@ -33,26 +33,26 @@ Una vez sincronizado nuestro proyecto debemos obtener esta pantalla:
 Al ejecutar nuestra aplicación lo primero que veremos será la Main Screen
 
 <p align="center">
-  <img src="https://github.com/Johnmorales26/Pokemon-JC/blob/main/PokedexJC/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png" width="200" title="Icon Aplication">
+  <img src="https://github.com/Johnmorales26/Pokemon-JC/blob/main/PokedexJC/app/src/main/res/drawable/pokemon_main_screen.png" width="200" title="Icon Aplication">
 </p>
 
 Al dar clic sobre el botón de Pokédex vamos a ingresar al listado de Pokemon:
 
 <p align="center">
-  <img src="C:\Users\JohnT\Documents\JC_Course\Pokemon\PokedexJC\app\src\main\res\drawable\pokemon_list_screen.png" width="200" title="Icon Aplication">
+  <img src="https://github.com/Johnmorales26/Pokemon-JC/blob/main/PokedexJC/app/src/main/res/drawable/pokemon_list_screen.png" width="200" title="Icon Aplication">
 </p>
 
 Una vez lanzado nuestro listado vamos a seleccionar un Pokemon para poder entrar a sus detalles:
 
 <p align="center">
-  <img src="C:\Users\JohnT\Documents\JC_Course\Pokemon\PokedexJC\app\src\main\res\drawable\pokemon_details_screen.png" width="200" title="Icon Aplication">
+  <img src="https://github.com/Johnmorales26/Pokemon-JC/blob/main/PokedexJC/app/src/main/res/drawable/pokemon_details_screen.png" width="200" title="Icon Aplication">
 </p>
 
 Al dar clic sobre nuestro BackdropScaffold vamos a poder acceder a mas detalles del pokemon como bien lo puede ser:
 
 <p align="center">
-  <img src="C:\Users\JohnT\Documents\JC_Course\Pokemon\PokedexJC\app\src\main\res\drawable\pokemon_about_screen.png" width="200" title="Icon Aplication">
-  <img src="C:\Users\JohnT\Documents\JC_Course\Pokemon\PokedexJC\app\src\main\res\drawable\pokemon_basestats_screen.png" width="200" title="Icon Aplication">
+  <img src="https://github.com/Johnmorales26/Pokemon-JC/blob/main/PokedexJC/app/src/main/res/drawable/pokemon_about_screen.png" width="200" title="Icon Aplication">
+  <img src="https://github.com/Johnmorales26/Pokemon-JC/blob/main/PokedexJC/app/src/main/res/drawable/pokemon_basestats_screen.png" width="200" title="Icon Aplication">
 </p>
 
 ## Tech Stack 🛠️
