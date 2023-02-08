@@ -33,7 +33,7 @@ Una vez sincronizado nuestro proyecto debemos obtener esta pantalla:
 Al ejecutar nuestra aplicación lo primero que veremos será la Main Screen
 
 <p align="center">
-  <img src="C:\Users\JohnT\Documents\JC_Course\Pokemon\PokedexJC\app\src\main\res\drawable\pokemon_main_screen.png" width="200" title="Icon Aplication">
+  <img src="https://github.com/Johnmorales26/Pokemon-JC/blob/main/PokedexJC/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png" width="200" title="Icon Aplication">
 </p>
 
 Al dar clic sobre el botón de Pokédex vamos a ingresar al listado de Pokemon:
