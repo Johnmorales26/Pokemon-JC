@@ -24,5 +24,5 @@ data class Pokemon(
 )
 
 fun pokemonColor(type: String): Color {
-    return mapTypeToColor(type.capitalize())
+    return mapTypeToColor(type.replaceFirstChar(Char::titlecase))
 }

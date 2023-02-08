@@ -1,11 +1,12 @@
 package com.johndev.pokedexjc.ui.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,9 +29,9 @@ fun PokemonBackLayer(
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp)
     ) {
-        val (namePokemon, typePokemon, idPokemon, imgPokemon, pokeball) = createRefs()
+        val (namePokemon, typePokemon, idPokemon, imgPokemon) = createRefs()
         Text(
-            text = pokemon.name.capitalize(),
+            text = pokemon.name.replaceFirstChar(Char::titlecase),
             color = colorResource(id = R.color.secondaryTextColor),
             style = MaterialTheme.typography.h4,
             modifier = Modifier.constrainAs(namePokemon) {
@@ -42,7 +43,7 @@ fun PokemonBackLayer(
             label = if (pokemon.types == null) {
                 "Fire"
             } else {
-                pokemon.types[0].type.name.capitalize()
+                pokemon.types[0].type.name.replaceFirstChar(Char::titlecase)
             },
             Modifier.constrainAs(typePokemon) {
                 top.linkTo(namePokemon.bottom)
