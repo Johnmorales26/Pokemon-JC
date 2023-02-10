@@ -41,7 +41,7 @@ Al dar clic sobre el botón de Pokédex vamos a ingresar al listado de Pokemon:
 <p align="center">
   <img src="C:\Users\JohnT\Documents\JC_Course\Pokemon\PokedexJC\app\src\main\res\drawable\pokemon_list_screen.png" width="200" title="Icon Aplication">
 </p>
-
+poder
 Una vez lanzado nuestro listado vamos a seleccionar un Pokemon para poder entrar a sus detalles:
 
 <p align="center">
