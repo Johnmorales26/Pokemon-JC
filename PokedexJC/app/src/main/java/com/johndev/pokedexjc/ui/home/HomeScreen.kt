@@ -17,10 +17,10 @@ fun HomeScreen(onActivityLaunch: (Int) -> Unit) {
         modifier = Modifier.fillMaxSize()
     ) {
         CardMainMenu {
-            if (it == 0) {
-                onActivityLaunch(it)
-            } else {
-                openDialog = true
+            when(it) {
+                0 -> onActivityLaunch(it)
+                1 -> onActivityLaunch(it)
+                else -> openDialog = true
             }
         }
         AlertDialogDeveloping(openDialog) {

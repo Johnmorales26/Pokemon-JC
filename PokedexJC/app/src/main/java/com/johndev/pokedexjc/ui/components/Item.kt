@@ -15,8 +15,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.johndev.pokedexjc.R
-import com.johndev.pokedexjc.model.dataDetails.Move
-import com.johndev.pokedexjc.model.dataDetails.Stat
+import com.johndev.pokedexjc.model.dataPokemon.Move
+import com.johndev.pokedexjc.model.dataPokemon.Stat
 
 @Composable
 fun ItemBaseStats(stat: Stat, colorType: Color) {

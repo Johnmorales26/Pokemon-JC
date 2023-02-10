@@ -44,3 +44,24 @@ fun mapTypeToColor(type: String): Color {
         else -> return LightBlue
     }
 }
+
+fun mapTypeToColorString(type: String): Color {
+    return when (type) {
+        "Grass" -> LightTeal
+        "Bug" -> Bug
+        "Fire" -> Fire
+        "Flying" -> Flying
+        "Water" -> Blue
+        "Ice" -> Ice
+        "Dragon" -> Dragon
+        "Normal" -> Normal
+        "Fighting" -> Fighting
+        "Electric" -> Electric
+        "Psychic" -> Psychic
+        "Poison" -> Poison
+        "Ghost" -> LightPurple
+        "Ground", "Rock" -> LightBrown
+        "Dark" -> Dark
+        else -> return LightBlue
+    }
+}

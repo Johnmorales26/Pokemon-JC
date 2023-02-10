@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.johndev.pokedexjc.model.dataDetails.PokemonComplete
+import com.johndev.pokedexjc.model.dataPokemon.PokemonComplete
 import com.johndev.pokedexjc.ui.pokedexDetails.viewModel.DetailsViewModel
 import des.c5inco.pokedexer.model.pokemonColor
 import kotlinx.coroutines.launch

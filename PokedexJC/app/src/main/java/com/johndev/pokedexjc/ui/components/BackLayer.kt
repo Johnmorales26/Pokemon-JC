@@ -8,6 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,8 +18,9 @@ import coil.compose.AsyncImage
 import com.johndev.pokedexjc.R
 import com.johndev.pokedexjc.data.PokemonUtils
 import com.johndev.pokedexjc.data.PokemonUtils.formatId
-import com.johndev.pokedexjc.model.dataDetails.PokemonComplete
+import com.johndev.pokedexjc.model.dataPokemon.PokemonComplete
 import com.johndev.pokedexjc.ui.theme.PokedexJCTheme
+import des.c5inco.pokedexer.model.mapTypeToColor
 
 @Composable
 fun PokemonBackLayer(
@@ -48,7 +50,8 @@ fun PokemonBackLayer(
             Modifier.constrainAs(typePokemon) {
                 top.linkTo(namePokemon.bottom)
                 start.linkTo(parent.start)
-            }
+            },
+            color = Color.Transparent
         )
         AsyncImage(
             model = PokemonUtils.getImagePokemon(pokemon.id),

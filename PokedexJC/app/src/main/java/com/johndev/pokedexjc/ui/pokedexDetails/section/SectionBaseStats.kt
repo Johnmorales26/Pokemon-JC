@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.johndev.pokedexjc.model.dataDetails.Stat
+import com.johndev.pokedexjc.model.dataPokemon.Stat
 import com.johndev.pokedexjc.ui.components.ItemBaseStats
 
 @Composable

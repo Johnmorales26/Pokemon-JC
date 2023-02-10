@@ -1,5 +1,6 @@
 package com.johndev.pokedexjc.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,8 +24,13 @@ import coil.compose.AsyncImage
 import com.johndev.pokedexjc.R
 import com.johndev.pokedexjc.data.PokemonUtils.calculateHeight
 import com.johndev.pokedexjc.data.PokemonUtils.calculateWeight
+import com.johndev.pokedexjc.model.dataMoves.MoveEntity
+import com.johndev.pokedexjc.model.dataMoves.categoryIcon
+import com.johndev.pokedexjc.model.dataMoves.type
 import com.johndev.pokedexjc.ui.theme.PokedexJCTheme
 import des.c5inco.pokedexer.model.Pokemon
+import des.c5inco.pokedexer.model.mapTypeToColor
+import des.c5inco.pokedexer.model.mapTypeToColorString
 import des.c5inco.pokedexer.model.pokemonColor
 
 @Composable
@@ -202,6 +209,47 @@ fun CardPokemonSize(height: Int, weight: Int) {
     }
 }
 
+@Composable
+fun CardMoves(move: MoveEntity) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp, horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                modifier = Modifier.weight(3f),
+                text = move.name,
+                style = MaterialTheme.typography.subtitle2
+            )
+            ChipType(
+                label = move.type,
+                modifier = Modifier.weight(2.5f),
+                color = mapTypeToColorString(move.type.replaceFirstChar(Char::titlecase))
+            )
+            Image(
+                modifier = Modifier.weight(1.5f).size(24.dp),
+                painter = painterResource(id = move.categoryIcon()),
+                contentDescription = null
+            )
+            Text(
+                modifier = Modifier.weight(1.5f),
+                text = move.power.toString(),
+                style = MaterialTheme.typography.subtitle2
+            )
+            Text(
+                modifier = Modifier.weight(1.5f),
+                text = move.accuracy.toString(),
+                style = MaterialTheme.typography.subtitle2
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
@@ -209,7 +257,7 @@ fun DefaultPreview() {
         Column(
             Modifier.fillMaxWidth()
         ) {
-            CardPokemonSize(100, 200)
+
         }
     }
 }

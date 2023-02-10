@@ -19,6 +19,7 @@ import com.johndev.pokedexjc.ui.theme.PrimaryColor
 
 @Composable
 fun TopAppBarActivities(
+    titleAppBar: String,
     onNavigationClick: () -> Unit
 ) {
     Row(
@@ -41,7 +42,7 @@ fun TopAppBarActivities(
         Text(
             modifier = Modifier
                 .padding(start = 16.dp),
-            text = "Pokedex",
+            text = titleAppBar,
             style = MaterialTheme.typography.h6
         )
 

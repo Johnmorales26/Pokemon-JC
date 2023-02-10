@@ -16,7 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.johndev.pokedexjc.model.dataDetails.PokemonComplete
+import com.johndev.pokedexjc.model.dataPokemon.PokemonComplete
 import com.johndev.pokedexjc.ui.pokedexDetails.section.SectionAbout
 import com.johndev.pokedexjc.ui.pokedexDetails.section.SectionBaseStats
 import des.c5inco.pokedexer.model.pokemonColor

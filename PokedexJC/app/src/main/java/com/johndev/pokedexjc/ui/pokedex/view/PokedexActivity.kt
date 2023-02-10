@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.johndev.pokedexjc.data.ViewModels.pokemonViewModel
 import com.johndev.pokedexjc.ui.components.TopAppBarActivities
 import com.johndev.pokedexjc.ui.pokedex.PokedexScreen
 import com.johndev.pokedexjc.ui.pokedex.viewModel.PokedexViewModel
@@ -23,19 +24,15 @@ import com.johndev.pokedexjc.ui.theme.PokedexJCTheme
 
 class PokedexActivity : ComponentActivity() {
 
-    private lateinit var pokedexViewModel: PokedexViewModel
-
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pokedexViewModel = PokedexViewModel()
-        getPokemonsAPI(pokedexViewModel)
-        getPokemonsRoom(pokedexViewModel)
+        getPokemonsRoom(pokemonViewModel)
         setContent {
             PokedexJCTheme {
                 // A surface container using the 'background' color from the theme
                 Scaffold(
-                    topBar = { TopAppBarActivities {
+                    topBar = { TopAppBarActivities("Pokedex") {
                         finish()
                     } },
                     modifier = Modifier.fillMaxSize(),
@@ -56,7 +53,7 @@ class PokedexActivity : ComponentActivity() {
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp)
         ) {
-            PokedexScreen(pokedexViewModel) {
+            PokedexScreen(pokemonViewModel) {
                 val intent = Intent(context, PokemonDetailsActivity::class.java).apply {
                     putExtra("id_passed", it)
                 }
@@ -65,13 +62,7 @@ class PokedexActivity : ComponentActivity() {
         }
     }
 
-    fun getPokemonsAPI(pokemonViewModel: PokedexViewModel) {
-        (1..100).forEach {
-            pokemonViewModel.getPokemon(it)
-        }
-    }
-
-    fun getPokemonsRoom(pokemonViewModel: PokedexViewModel) {
+    private fun getPokemonsRoom(pokemonViewModel: PokedexViewModel) {
         pokemonViewModel.getAllPokemon()
     }
 

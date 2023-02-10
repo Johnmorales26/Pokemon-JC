@@ -11,7 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.johndev.pokedexjc.model.dataDetails.PokemonComplete
+import com.johndev.pokedexjc.model.dataPokemon.PokemonComplete
 import com.johndev.pokedexjc.ui.components.CardPokemonSize
 import com.johndev.pokedexjc.ui.components.ItemMoves
 

@@ -1,6 +1,5 @@
 package com.johndev.pokedexjc.ui.pokedex.viewModel
 
-import androidx.compose.ui.text.capitalize
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,7 @@ import com.johndev.pokedexjc.data.PokemonUtils.getImagePokemon
 import com.johndev.pokedexjc.model.PokemonEntity
 import com.johndev.pokedexjc.model.Test.PokemonMoreDetails
 import com.johndev.testingretrofit.Client.service
-import com.johndev.testingretrofit.PokemonRepository
+import com.johndev.pokedexjc.ui.pokedex.model.PokemonRepository
 import des.c5inco.pokedexer.model.Pokemon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

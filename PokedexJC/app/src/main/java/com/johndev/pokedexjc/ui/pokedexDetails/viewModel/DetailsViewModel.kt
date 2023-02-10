@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.johndev.pokedexjc.model.PokemonEntity
-import com.johndev.pokedexjc.model.dataDetails.PokemonComplete
+import com.johndev.pokedexjc.model.dataPokemon.PokemonComplete
 import com.johndev.testingretrofit.Client
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

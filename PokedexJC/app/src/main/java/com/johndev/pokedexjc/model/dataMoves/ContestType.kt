@@ -1,0 +1,6 @@
+package com.johndev.pokedexjc.model.dataMoves
+
+data class ContestType(
+    val name: String,
+    val url: String
+)
