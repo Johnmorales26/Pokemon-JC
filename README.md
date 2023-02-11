@@ -30,7 +30,14 @@ Una vez sincronizado nuestro proyecto debemos obtener esta pantalla:
 
 ## Ejecutando la aplicación
 
-Al ejecutar nuestra aplicación lo primero que veremos será la Main Screen
+Al ejecutar nuestra aplicación lo primero que veremos será las paginas correspondientes al OnboardingScreen
+
+<p align="center">
+  <img src="src/pokemon_onboarding_screen_01.png" width="200" title="Icon Aplication">
+  <img src="src/pokemon_onboarding_screen_02.png" width="200" title="Icon Aplication">
+</p>
+
+Una vez lanzadas todas las Screens correpondientes al Onboarding nos va a direccionar al HomeScreen
 
 <p align="center">
   <img src="src/pokemon_main_screen.png" width="200" title="Icon Aplication">
@@ -72,6 +79,8 @@ Al volver a nuestro menu principal podemos acceder al siguiente apartado el cual
 * Retrofit
 * Coil
 * Constraint Layout
+* Navigation
+* SharedPreferences
 
 ## Autor ✒️
 

@@ -15,18 +15,8 @@
         android:theme="@style/Theme.PokedexJC"
         tools:targetApi="31">
         <activity
-            android:name=".ui.moves.view.MovesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.pokedexDetails.view.PokemonDetailsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.pokedex.view.PokedexActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.PokedexJC">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

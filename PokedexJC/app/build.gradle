@@ -13,7 +13,7 @@ android {
         minSdk 23
         targetSdk 33
         versionCode 1
-        versionName "1.0"
+        versionName "1.1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -81,6 +81,12 @@ dependencies {
 
     //  Constraint Layout
     implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.1'
+
+    //  Navigation
+    implementation 'androidx.navigation:navigation-compose:2.5.3'
+
+    //  Shared Preferences
+    implementation 'androidx.preference:preference-ktx:1.2.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

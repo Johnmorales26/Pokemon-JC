@@ -11,7 +11,7 @@ import com.johndev.pokedexjc.model.dataPokemon.PokemonComplete
 import com.johndev.pokedexjc.ui.components.CardMoves
 
 @Composable
-fun MovesScreen(movesViewModel: MovesViewModel) {
+fun MovesList(movesViewModel: MovesViewModel) {
     val move: List<MoveEntity> by movesViewModel.moveRoom.observeAsState(initial = listOf())
     LazyColumn(
         modifier = Modifier.fillMaxSize()
