@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.johndev.pokedexjc.model.dataPokemon.PokemonComplete
-import com.johndev.testingretrofit.Client
+import com.johndev.pokedexjc.model.entity.PokemonEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -14,13 +13,13 @@ import retrofit2.Response
 
 class DetailsViewModel : ViewModel() {
 
-    private val _pokemonsDetails = MutableLiveData<PokemonComplete>()
-    val pokemonDetails : LiveData<PokemonComplete> = _pokemonsDetails
+    /*private val _pokemonsDetails = MutableLiveData<PokemonEntity>()
+    val pokemonDetails : LiveData<PokemonEntity> = _pokemonsDetails
 
     fun getPokemon(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            Client.service.getPokemonComplete(id).enqueue(object : Callback<PokemonComplete> {
-                override fun onResponse(call: Call<PokemonComplete>, response: Response<PokemonComplete>) {
+            Client.service.getPokemonEntity(id).enqueue(object : Callback<PokemonEntity> {
+                override fun onResponse(call: Call<PokemonEntity>, response: Response<PokemonEntity>) {
                     // Procesar respuesta exitosa
                     response.body()?.let {
                         _pokemonsDetails.value = it
@@ -29,11 +28,11 @@ class DetailsViewModel : ViewModel() {
                         }
                     }
                 }
-                override fun onFailure(call: Call<PokemonComplete>, t: Throwable) {
+                override fun onFailure(call: Call<PokemonEntity>, t: Throwable) {
                     // Procesar error en la petición
                 }
             })
         }
-    }
+    }*/
 
 }

@@ -1,4 +1,4 @@
-package des.c5inco.pokedexer.model
+package com.johndev.pokedexjc.model
 
 import androidx.compose.ui.graphics.Color
 import com.johndev.pokedexjc.ui.theme.*

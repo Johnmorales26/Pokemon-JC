@@ -16,20 +16,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.johndev.pokedexjc.model.dataPokemon.PokemonComplete
+import com.johndev.pokedexjc.model.entity.PokemonEntity
+import com.johndev.pokedexjc.model.entity.pokemonColor
 import com.johndev.pokedexjc.ui.pokedexDetails.section.SectionAbout
 import com.johndev.pokedexjc.ui.pokedexDetails.section.SectionBaseStats
-import des.c5inco.pokedexer.model.pokemonColor
 
 @Composable
-fun TabsPokemonDetails(pokemon: PokemonComplete) {
+fun TabsPokemonDetails(pokemon: PokemonEntity) {
     var state by remember { mutableStateOf(0) }
     val titles = listOf("About", "Base Stats")//, "Evolution", "Moves")
     val pokemonColor = pokemonColor(
         (if (pokemon.types == null) {
             "Fire"
         } else {
-            pokemon.types[0].type.name
+            pokemon.typeOfPokemon.toString()
         })
     )
     // Reuse the default offset animation modifier, but use our own indicator
@@ -51,7 +51,7 @@ fun TabsPokemonDetails(pokemon: PokemonComplete) {
         }
         when(state) {
             0 -> SectionAbout(pokemon)
-            1 -> SectionBaseStats(pokemon.stats, pokemonColor)
+            1 -> SectionBaseStats(pokemon, pokemonColor)
             //2 -> SectionEvolutions()
             //3 -> SectionMoves()
         }

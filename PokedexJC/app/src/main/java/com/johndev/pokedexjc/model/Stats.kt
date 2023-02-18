@@ -1,4 +1,4 @@
-package des.c5inco.pokedexer.model
+package com.johndev.pokedexjc.model
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector3D

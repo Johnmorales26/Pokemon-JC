@@ -3,9 +3,7 @@ package com.johndev.pokedexjc.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -15,21 +13,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.johndev.pokedexjc.R
-import com.johndev.pokedexjc.model.dataPokemon.PokemonComplete
+import com.johndev.pokedexjc.data.PokemonUtils.titleCase
+import com.johndev.pokedexjc.data.ViewModels.pokemonViewModel
+import com.johndev.pokedexjc.model.entity.PokemonEntity
+import com.johndev.pokedexjc.model.entity.pokemonColor
 import com.johndev.pokedexjc.navigation.Routes
-import com.johndev.pokedexjc.ui.pokedexDetails.viewModel.DetailsViewModel
-import des.c5inco.pokedexer.model.pokemonColor
 import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun BackdropScaffoldPokemon(
-    detailsViewModel: DetailsViewModel,
     navigationController: NavHostController
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    val pokemon: PokemonComplete by detailsViewModel.pokemonDetails.observeAsState(initial = PokemonComplete())
+    val pokemon: PokemonEntity? by pokemonViewModel.pokemonRoom.observeAsState(initial = PokemonEntity())
     LaunchedEffect(scaffoldState) {
         scaffoldState.reveal()
     }
@@ -37,7 +35,7 @@ fun BackdropScaffoldPokemon(
         scaffoldState = scaffoldState,
         appBar = {
             TopAppBar(
-                title = { Text(pokemon.name.replaceFirstChar(Char::titlecase)) },
+                title = { Text(titleCase(pokemon?.name ?: "")) },
                 navigationIcon = {
                     IconButton(onClick = { navigationController.navigate(Routes.PokedexScreen.route) }) {
                         Icon(
@@ -74,10 +72,10 @@ fun BackdropScaffoldPokemon(
             )
         },
         backLayerBackgroundColor = pokemonColor(
-            (if (pokemon.types == null) {
+            (if (pokemon?.typeOfPokemon == null) {
                 "Fire"
             } else {
-                pokemon.types!![0].type.name
+                pokemon!!.typeOfPokemon!!
             })
         ),
         backLayerContent = {
@@ -93,14 +91,18 @@ fun BackdropScaffoldPokemon(
                         .size(200.dp)
                     //.graphicsLayer { alpha = textAlphaTarget }
                 )
-                PokemonBackLayer(pokemon)
+                if (pokemon?.name != null) {
+                    PokemonBackLayer(pokemon!!)
+                }
             }
         },
         frontLayerContent = {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                PokemonFrontLayer(pokemon)
+                if (pokemon?.name != null) {
+                    PokemonFrontLayer(pokemon!!)
+                }
             }
         }
     )

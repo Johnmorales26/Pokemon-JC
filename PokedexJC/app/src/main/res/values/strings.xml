@@ -4,4 +4,8 @@
     <string name="onboarding_section_pokedex_description">In this section there is a complete library of the existing Pokemon within the series and video games.</string>
     <string name="onboarding_section_moves">Moves</string>
     <string name="onboarding_section_moves_description">In this section you will find a complete library of the movements and attacks existing within the series and video games.</string>
+    <string name="onboarding_section_items">Items</string>
+    <string name="onboarding_section_moves_items">In this section we can browse the different types of Items that are used throughout Pokemon.</string>
+    <string name="btn_start">Start</string>
+    <string name="btn_upgrade_pro">Upgrade to Pro</string>
 </resources>

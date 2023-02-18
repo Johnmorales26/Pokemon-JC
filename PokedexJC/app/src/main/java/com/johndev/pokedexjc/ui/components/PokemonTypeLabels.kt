@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import des.c5inco.pokedexer.model.mapTypeToColor
+import com.johndev.pokedexjc.model.mapTypeToColor
 
 data class TypeLabelMetrics(
     val cornerRadius: Dp,

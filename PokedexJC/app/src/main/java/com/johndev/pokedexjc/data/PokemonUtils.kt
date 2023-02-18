@@ -16,4 +16,6 @@ object PokemonUtils {
         return StringBuilder().append(weight / 10.0).append("kg").toString()
     }
 
+    fun titleCase(word: String) = word.replaceFirstChar(Char::titlecase)
+
 }

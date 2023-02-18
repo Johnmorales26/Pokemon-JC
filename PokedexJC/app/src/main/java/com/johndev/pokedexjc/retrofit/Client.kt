@@ -1,4 +1,4 @@
-package com.johndev.testingretrofit
+package com.johndev.pokedexjc.retrofit
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

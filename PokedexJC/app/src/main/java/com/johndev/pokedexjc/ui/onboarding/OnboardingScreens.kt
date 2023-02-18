@@ -19,10 +19,10 @@ import androidx.compose.ui.unit.dp
 import com.johndev.pokedexjc.R
 import com.johndev.pokedexjc.data.getOnboardingMenu
 import com.johndev.pokedexjc.model.Onboarding
+import com.johndev.pokedexjc.model.mapTypeToColorString
 import com.johndev.pokedexjc.ui.components.RotatingPokeBall
 import com.johndev.pokedexjc.ui.theme.Bug
 import com.johndev.pokedexjc.ui.theme.PokedexJCTheme
-import des.c5inco.pokedexer.model.mapTypeToColorString
 
 @Composable
 fun OnboardingModelScreen(

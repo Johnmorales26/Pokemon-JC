@@ -15,11 +15,10 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.johndev.pokedexjc.R
-import com.johndev.pokedexjc.model.dataPokemon.Move
-import com.johndev.pokedexjc.model.dataPokemon.Stat
+import com.johndev.pokedexjc.data.PokemonUtils.titleCase
 
 @Composable
-fun ItemBaseStats(stat: Stat, colorType: Color) {
+fun ItemBaseStats(valueStats: Int?, nameStats: String, colorType: Color) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -29,7 +28,7 @@ fun ItemBaseStats(stat: Stat, colorType: Color) {
     ) {
         Text(
             modifier = Modifier.weight(3f),
-            text = stat.stat.name.replaceFirstChar(Char::titlecase),
+            text = titleCase(nameStats),
             color = colorResource(id = R.color.primaryDarkColor),
             style = MaterialTheme.typography.body2
         )
@@ -37,20 +36,22 @@ fun ItemBaseStats(stat: Stat, colorType: Color) {
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 4.dp),
-            text = stat.base_stat.toString(),
+            text = valueStats.toString(),
             style = MaterialTheme.typography.body1
         )
-        LinearProgressIndicator(
-            modifier = Modifier.weight(6f),
-            progress = stat.base_stat / 100.0f,
-            color = colorType,
-            backgroundColor = colorType.copy(alpha = IndicatorBackgroundOpacity)
-        )
+        if (valueStats != null) {
+            LinearProgressIndicator(
+                modifier = Modifier.weight(6f),
+                progress = valueStats / 100.0f,
+                color = colorType,
+                backgroundColor = colorType.copy(alpha = IndicatorBackgroundOpacity)
+            )
+        }
     }
 }
 
 @Composable
-fun ItemMoves(move: Move) {
+fun ItemMoves(move: String) {
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -65,7 +66,7 @@ fun ItemMoves(move: Move) {
             )
             Text(
                 modifier = Modifier.padding(start = 8.dp).weight(8f),
-                text = move.move.name.replaceFirstChar(Char::titlecase),
+                text = move.replaceFirstChar(Char::titlecase),
                 style = MaterialTheme.typography.body1
             )
         }

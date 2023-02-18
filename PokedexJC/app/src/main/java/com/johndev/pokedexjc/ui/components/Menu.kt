@@ -35,11 +35,7 @@ fun MenuMain(
                     text = item.label,
                     color = item.color
                 ) {
-                    when(index) {
-                        0 -> onOptionUnderDevelopment(0)
-                        1 -> onOptionUnderDevelopment(1)
-                        else -> onOptionUnderDevelopment(2)
-                    }
+                    onOptionUnderDevelopment(index)
                 }
             }
         }

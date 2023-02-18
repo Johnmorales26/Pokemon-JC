@@ -29,6 +29,12 @@ fun getOnboardingMenu(): List<Onboarding> {
             titleRes = R.string.onboarding_section_moves,
             descriptionRes = R.string.onboarding_section_moves_description,
             colorSelected = "Fire"
+        ),
+        Onboarding(
+            imgRes = R.drawable.pokeball,
+            titleRes = R.string.onboarding_section_items,
+            descriptionRes = R.string.onboarding_section_moves_items,
+            colorSelected = "Dragon"
         )
     )
 }

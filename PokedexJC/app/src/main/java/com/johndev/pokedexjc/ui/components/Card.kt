@@ -24,14 +24,10 @@ import coil.compose.AsyncImage
 import com.johndev.pokedexjc.R
 import com.johndev.pokedexjc.data.PokemonUtils.calculateHeight
 import com.johndev.pokedexjc.data.PokemonUtils.calculateWeight
-import com.johndev.pokedexjc.model.dataMoves.MoveEntity
-import com.johndev.pokedexjc.model.dataMoves.categoryIcon
-import com.johndev.pokedexjc.model.dataMoves.type
+import com.johndev.pokedexjc.data.PokemonUtils.titleCase
+import com.johndev.pokedexjc.model.entity.*
+import com.johndev.pokedexjc.model.mapTypeToColorString
 import com.johndev.pokedexjc.ui.theme.PokedexJCTheme
-import des.c5inco.pokedexer.model.Pokemon
-import des.c5inco.pokedexer.model.mapTypeToColor
-import des.c5inco.pokedexer.model.mapTypeToColorString
-import des.c5inco.pokedexer.model.pokemonColor
 
 @Composable
 fun CardMainMenu(
@@ -70,12 +66,12 @@ fun CardMainMenu(
 @Composable
 fun PokeDexCard(
     modifier: Modifier = Modifier,
-    pokemon: Pokemon,
-    onPokemonSelected: (Pokemon) -> Unit = {}
+    pokemon: PokemonEntity,
+    onPokemonSelected: (PokemonEntity) -> Unit = {}
 ) {
     Surface(
         modifier = modifier,
-        color = pokemonColor(pokemon.typeOfPokemon),
+        color = pokemonColor(pokemon.typeOfPokemon!!),
         shape = RoundedCornerShape(16.dp)
     ) {
         PokeDexCardContent(
@@ -90,7 +86,7 @@ fun PokeDexCard(
 @Composable
 private fun PokeDexCardContent(
     modifier: Modifier = Modifier,
-    pokemon: Pokemon
+    pokemon: PokemonEntity
 ) {
     Box(modifier.height(120.dp)) {
         Column(
@@ -121,7 +117,7 @@ private fun PokeDexCardContent(
         )*/
 
         AsyncImage(
-            model = pokemon.image,
+            model = pokemon.imageUrl,
             contentDescription = null,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -134,7 +130,7 @@ private fun PokeDexCardContent(
 @Composable
 private fun PokemonName(name: String?) {
     Text(
-        text = name ?: "",
+        text = titleCase(name ?: ""),
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
         color = Color.White,
@@ -168,7 +164,7 @@ private fun PokeDexCardPreview() {
 }
 
 @Composable
-fun CardPokemonSize(height: Int, weight: Int) {
+fun CardPokemonSize(height: Int? = null, weight: Int? = null) {
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -186,7 +182,7 @@ fun CardPokemonSize(height: Int, weight: Int) {
                 )
                 Text(
                     modifier = Modifier.padding(bottom = 16.dp, top = 8.dp),
-                    text = calculateHeight(height),
+                    text = calculateHeight(height ?: 0),
                     style = MaterialTheme.typography.h6
                 )
             }
@@ -201,7 +197,7 @@ fun CardPokemonSize(height: Int, weight: Int) {
                 )
                 Text(
                     modifier = Modifier.padding(bottom = 16.dp, top = 8.dp),
-                    text = calculateWeight(weight),
+                    text = calculateWeight(weight ?: 0),
                     style = MaterialTheme.typography.h6
                 )
             }
@@ -212,7 +208,9 @@ fun CardPokemonSize(height: Int, weight: Int) {
 @Composable
 fun CardMoves(move: MoveEntity) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp, bottom = 4.dp)
     ) {
         Row(
             modifier = Modifier
@@ -223,16 +221,18 @@ fun CardMoves(move: MoveEntity) {
         ) {
             Text(
                 modifier = Modifier.weight(3f),
-                text = move.name,
+                text = move.name!!,
                 style = MaterialTheme.typography.subtitle2
             )
             ChipType(
-                label = move.type,
+                label = move.type_name!!,
                 modifier = Modifier.weight(2.5f),
-                color = mapTypeToColorString(move.type.replaceFirstChar(Char::titlecase))
+                color = mapTypeToColorString(move.type_name!!.replaceFirstChar(Char::titlecase))
             )
             Image(
-                modifier = Modifier.weight(1.5f).size(24.dp),
+                modifier = Modifier
+                    .weight(1.5f)
+                    .size(24.dp),
                 painter = painterResource(id = move.categoryIcon()),
                 contentDescription = null
             )
@@ -245,6 +245,39 @@ fun CardMoves(move: MoveEntity) {
                 modifier = Modifier.weight(1.5f),
                 text = move.accuracy.toString(),
                 style = MaterialTheme.typography.subtitle2
+            )
+        }
+    }
+}
+
+@Composable
+fun CardItem(itemEntity: ItemEntity) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier.weight(2f).height(80.dp),
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(
+                    text = titleCase(itemEntity.name!!),
+                    style = MaterialTheme.typography.h6
+                )
+                Text(
+                    text = itemEntity.short_effect!!,
+                    style = MaterialTheme.typography.caption,
+                    maxLines = 2
+                )
+            }
+            AsyncImage(
+                modifier = Modifier.weight(1f).size(80.dp),
+                model = itemEntity.sprites,
+                contentDescription = null
             )
         }
     }

@@ -1,14 +1,15 @@
 package com.johndev.pokedexjc.ui.pokedex.model
 
-import com.johndev.pokedexjc.model.PokemonEntity
-import com.johndev.pokedexjc.ui.pokedex.model.RoomPokemonDatabase
+import com.johndev.pokedexjc.model.entity.PokemonEntity
 
 class PokemonRepository {
 
-    private val roomDatabase = RoomPokemonDatabase()
+    private val roomDatabase = PokemonDatabase()
 
-    suspend fun addPokemon(pokemonEntity: PokemonEntity) = roomDatabase.addPokemon(pokemonEntity)
+    suspend fun insert(pokemonEntity: PokemonEntity) = roomDatabase.insert(pokemonEntity)
 
-    suspend fun getAllPokemon() = roomDatabase.getAllPokemon()
+    suspend fun getAll() = roomDatabase.getAll()
+
+    suspend fun findById(id: Int) = roomDatabase.findById(id)
 
 }

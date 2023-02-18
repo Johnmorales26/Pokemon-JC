@@ -11,12 +11,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.johndev.pokedexjc.model.dataPokemon.PokemonComplete
+import com.johndev.pokedexjc.model.entity.PokemonEntity
 import com.johndev.pokedexjc.ui.components.CardPokemonSize
 import com.johndev.pokedexjc.ui.components.ItemMoves
 
 @Composable
-fun SectionAbout(pokemon: PokemonComplete) {
+fun SectionAbout(pokemon: PokemonEntity) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -33,8 +33,12 @@ fun SectionAbout(pokemon: PokemonComplete) {
             verticalArrangement = Arrangement.spacedBy(5.dp),
             horizontalArrangement = Arrangement.spacedBy(5.dp),
             content = {
-                items(pokemon.moves.size) {index ->
-                    val item = pokemon.moves[index]
+                val listMoves: MutableList<String> = mutableListOf()
+                pokemon.moves?.split(",")?.forEach {
+                    listMoves.add(it)
+                }
+                items(listMoves.size) {index ->
+                    val item = listMoves[index]
                     ItemMoves(item)
                 }
             }

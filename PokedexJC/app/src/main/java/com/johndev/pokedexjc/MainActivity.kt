@@ -10,7 +10,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -18,11 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.preference.PreferenceManager
-import com.johndev.pokedexjc.data.ViewModels.movesViewModel
-import com.johndev.pokedexjc.data.ViewModels.pokemonViewModel
 import com.johndev.pokedexjc.navigation.*
-import com.johndev.pokedexjc.ui.moves.viewModel.MovesViewModel
-import com.johndev.pokedexjc.ui.pokedex.viewModel.PokedexViewModel
 import com.johndev.pokedexjc.ui.theme.PokedexJCTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,9 +29,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         setContent {
-            val context = LocalContext.current
-            getPokemonsAPI(pokemonViewModel)
-            getMovesRetrofit(movesViewModel)
             PokedexJCTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -47,15 +39,15 @@ class MainActivity : ComponentActivity() {
                         navController = navigationController,
                         startDestination = startDestination(sharedPreferences)
                     ) {
-                        composable(Routes.OnboardingScreen_One.route) {
+                        composable(Routes.OnboardingMain.route) {
                             OnboardingScreen_One(
                                 navigationController = navigationController
                             )
                         }
-                        composable(Routes.OnboardingScreen_Two.route) {
+                        composable(Routes.OnboardingStart.route) {
                             OnboardingScreen_Two(
                                 navigationController = navigationController,
-                                sharedPreferences
+                                        sharedPreferences = sharedPreferences
                             )
                         }
                         composable(Routes.HomeScreen.route) {
@@ -70,6 +62,11 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.MovesScreen.route) {
                             MovesScreen(
+                                navigationController = navigationController
+                            )
+                        }
+                        composable(Routes.ItemScreen.route) {
+                            ItemScreen(
                                 navigationController = navigationController
                             )
                         }
@@ -92,21 +89,9 @@ class MainActivity : ComponentActivity() {
 
     private fun startDestination(sharedPreferences: SharedPreferences): String {
         return if (sharedPreferences.getBoolean("isFirstStart", true)) {
-            Routes.OnboardingScreen_One.route
+            Routes.OnboardingMain.route
         } else {
             Routes.HomeScreen.route
-        }
-    }
-
-    private fun getPokemonsAPI(pokemonViewModel: PokedexViewModel) {
-        (1..100).forEach {
-            pokemonViewModel.getPokemon(it)
-        }
-    }
-
-    private fun getMovesRetrofit(movesViewModel: MovesViewModel) {
-        (1..100).forEach {
-            movesViewModel.getMoveRetrofit(it)
         }
     }
 

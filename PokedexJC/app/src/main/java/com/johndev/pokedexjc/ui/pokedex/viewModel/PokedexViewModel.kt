@@ -1,15 +1,15 @@
 package com.johndev.pokedexjc.ui.pokedex.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.johndev.pokedexjc.data.PokemonUtils.getImagePokemon
-import com.johndev.pokedexjc.model.PokemonEntity
-import com.johndev.pokedexjc.model.Test.PokemonMoreDetails
-import com.johndev.testingretrofit.Client.service
+import com.johndev.pokedexjc.model.dataPokemon.PokemonRetrofit
+import com.johndev.pokedexjc.model.entity.PokemonEntity
+import com.johndev.pokedexjc.retrofit.Client.service
 import com.johndev.pokedexjc.ui.pokedex.model.PokemonRepository
-import des.c5inco.pokedexer.model.Pokemon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,82 +21,100 @@ class PokedexViewModel : ViewModel() {
 
     private val repository = PokemonRepository()
 
-    private val _pokemons = MutableLiveData<MutableList<Pokemon>>()
+    private val _resultAllPokemon = MutableLiveData<List<PokemonEntity>>()
+    val allPokemon : LiveData<List<PokemonEntity>> = _resultAllPokemon
 
-    private val resultAllPokemon = MutableLiveData<MutableList<PokemonEntity>>()
-    val allPokemon : LiveData<MutableList<PokemonEntity>> = resultAllPokemon
+    private val _pokemonRoom = MutableLiveData<PokemonEntity?>()
+    val pokemonRoom : LiveData<PokemonEntity?> = _pokemonRoom
 
-    private val resultMoreDetails = MutableLiveData<PokemonMoreDetails>()
-    val moreDetails : LiveData<PokemonMoreDetails> = resultMoreDetails
-
-    private val result = MutableLiveData<Long>()
-
-    private val _pokemonsDetails = MutableLiveData<PokemonEntity>()
-
-    fun getPokemonsList() {
-        viewModelScope.launch {
-            //_pokemons.value = SamplePokemonData
-        }
-    }
-
-    fun getAllPokemon() {
+    fun findById(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getAllPokemon()
+            val result = repository.findById(id)
             withContext(Dispatchers.Main) {
-                resultAllPokemon.value = result
+                _pokemonRoom.value = result
             }
         }
     }
 
-    suspend fun addPokemon(pokemonEntity: PokemonEntity) {
-        viewModelScope.launch {
-            try {
-                val resultSave = repository.addPokemon(pokemonEntity)
-                result.value = resultSave
-            } catch (e: Exception) {
-                //snackbarMsg.value = R.string.save_error_note
+    fun getPokemonsByRoom() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.getAll()
+            withContext(Dispatchers.Main) {
+                _resultAllPokemon.value = result
             }
         }
     }
 
     fun getPokemon(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            service.getPokemonWithDetails(id).enqueue(object : Callback<PokemonEntity> {
-                override fun onResponse(call: Call<PokemonEntity>, response: Response<PokemonEntity>) {
+            service.getPokemonComplete(id).enqueue(object : Callback<PokemonRetrofit> {
+                override fun onResponse(call: Call<PokemonRetrofit>, response: Response<PokemonRetrofit>) {
                     // Procesar respuesta exitosa
                     response.body()?.let {
-                        _pokemonsDetails.value = it
-                        viewModelScope.launch(Dispatchers.IO) {
-                            getMoreDetails(it)
+                        try {
+                            var typePokemon = ""
+                            var movesPokemon = ""
+                            it.types.forEach { type ->
+                                typePokemon += "${type.type.name},"
+                            }
+                            it.moves.forEach { move ->
+                                movesPokemon += "${move.move.name},"
+                            }
+                            val pokemonRoom = PokemonEntity(
+                                id = it.id,
+                                name = it.name,
+                                typeOfPokemon = it.types[0].type.name,
+                                height = it.height,
+                                weight = it.weight,
+                                moves = movesPokemon,
+                                types = typePokemon,
+                                imageUrl = getImagePokemon(it.id),
+                                imagesCarousel = "",
+                                order = it.order,
+                                base_experience = it.base_experience,
+                                hp = it.stats[0].base_stat,
+                                attack = it.stats[1].base_stat,
+                                defense = it.stats[2].base_stat,
+                                special_attack = it.stats[3].base_stat,
+                                special_defense = it.stats[4].base_stat,
+                                speed = it.stats[5].base_stat
+                            )
+                            viewModelScope.launch(Dispatchers.IO) {
+                                repository.insert(pokemonRoom)
+                            }
+                        } catch (e: Exception) {
+                            Log.e("Error_Insert_Pokemon", "onResponse: $e", )
                         }
                     }
                 }
-                override fun onFailure(call: Call<PokemonEntity>, t: Throwable) {
+                override fun onFailure(call: Call<PokemonRetrofit>, t: Throwable) {
                     // Procesar error en la petición
                 }
             })
         }
     }
 
-    fun getMoreDetails(pokemon: PokemonEntity) {
+    /*fun getAllPokemon() {
         viewModelScope.launch(Dispatchers.IO) {
-            service.getTypePokemon(pokemon.id).enqueue(object : Callback<PokemonMoreDetails> {
-                override fun onResponse(call: Call<PokemonMoreDetails>, response: Response<PokemonMoreDetails>) {
+            service.getAllPokemon().enqueue(object : Callback<ListPokemon> {
+                override fun onResponse(call: Call<ListPokemon>, response: Response<ListPokemon>) {
                     // Procesar respuesta exitosa
-                    response.body()?.let {
-                        resultMoreDetails.value = it
-                        viewModelScope.launch {
-                            pokemon.imageUrl = getImagePokemon(it.id)
-                            pokemon.type = it.types[0].type.name.capitalize()
-                            addPokemon(pokemon)
+                    response.body()?.let { it ->
+                        it.results.forEach {
+                            viewModelScope.launch(Dispatchers.IO) {
+                                var id = it.url.replace("https://pokeapi.co/api/v2/pokemon/", "")
+                                id = id.replace("/", "")
+                                Log.i("ID_POKEMON", "onResponse: ${id.toInt()}")
+                                getPokemon(id.toInt())
+                            }
                         }
                     }
                 }
-                override fun onFailure(call: Call<PokemonMoreDetails>, t: Throwable) {
+                override fun onFailure(call: Call<ListPokemon>, t: Throwable) {
                     // Procesar error en la petición
                 }
             })
         }
-    }
+    }*/
 
 }
