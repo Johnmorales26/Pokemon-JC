@@ -1,5 +1,6 @@
 package com.johndev.pokedexjc.retrofit
 
+import com.johndev.pokedexjc.model.dataAbilities.AbilityRetrofit
 import com.johndev.pokedexjc.model.dataItem.ItemRetrofit
 import com.johndev.pokedexjc.model.dataMoves.MoveRetrofit
 import com.johndev.pokedexjc.model.dataPokemon.ListPokemon
@@ -22,5 +23,8 @@ interface PokemonService {
 
     @GET("item/{id}/")
     fun getItem(@Path("id") id: Int): Call<ItemRetrofit>
+
+    @GET("ability/{id}/")
+    fun getAbility(@Path("id") id: Int): Call<AbilityRetrofit>
 
 }

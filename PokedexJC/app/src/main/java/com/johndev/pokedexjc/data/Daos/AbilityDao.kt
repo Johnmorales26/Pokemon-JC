@@ -2,12 +2,14 @@ package com.johndev.pokedexjc.data.Daos
 
 import androidx.room.*
 import com.johndev.pokedexjc.model.entity.AbilityEntity
+import com.johndev.pokedexjc.model.entity.ItemEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AbilityDao {
 
     @Query("SELECT * FROM AbilityEntity")
-    suspend fun getAll(): List<AbilityEntity>
+    fun getAll(): Flow<List<AbilityEntity>>
 
     @Query("SELECT * FROM AbilityEntity WHERE id = :id LIMIT 1  ")
     suspend fun findById(id: Int): AbilityEntity?

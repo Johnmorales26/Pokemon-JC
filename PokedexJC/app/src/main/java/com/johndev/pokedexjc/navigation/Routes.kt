@@ -9,6 +9,11 @@ sealed class Routes(val route: String) {
     object PokedexScreen : Routes("PokedexScreen")
     object MovesScreen : Routes("MovesScreen")
     object ItemScreen : Routes("ItemScreen")
+    object AbilityScreen : Routes("AbilityScreen")
+
+    object FavoritesScreen : Routes("FavoritesScreen")
+    object CapturedScreen : Routes("CapturedScreen")
+
     object DetailsPokemonScreen : Routes("DetailsPokemonScreen/{idPokemon}") {
         fun createRoute(idPokemon: Int) = "DetailsPokemonScreen/$idPokemon"
     }

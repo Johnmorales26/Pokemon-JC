@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,11 +23,14 @@ import kotlinx.coroutines.launch
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun BackdropScaffoldPokemon(
+    pokemon: PokemonEntity,
     navigationController: NavHostController
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    val pokemon: PokemonEntity? by pokemonViewModel.pokemonRoom.observeAsState(initial = PokemonEntity())
+
+    var isFavorite by remember { mutableStateOf(pokemon.isFavorite) }
+    var isCaptured by remember { mutableStateOf(pokemon.isCaptured) }
     LaunchedEffect(scaffoldState) {
         scaffoldState.reveal()
     }
@@ -35,7 +38,7 @@ fun BackdropScaffoldPokemon(
         scaffoldState = scaffoldState,
         appBar = {
             TopAppBar(
-                title = { Text(titleCase(pokemon?.name ?: "")) },
+                title = { Text(titleCase(pokemon.name ?: "")) },
                 navigationIcon = {
                     IconButton(onClick = { navigationController.navigate(Routes.PokedexScreen.route) }) {
                         Icon(
@@ -45,17 +48,33 @@ fun BackdropScaffoldPokemon(
                     }
                 },
                 actions = {
-                    var clickCount by remember { mutableStateOf(0) }
                     IconButton(
                         onClick = {
-                            // show snackbar as a suspend function
-                            scope.launch {
-                                scaffoldState.snackbarHostState
-                                    .showSnackbar("Snackbar #${++clickCount}")
+                            pokemon.let {
+                                isFavorite = !isFavorite
+                                pokemonViewModel.updateFavorite(it)
                             }
                         }
                     ) {
-                        Icon(Icons.Default.Favorite, contentDescription = "Localized description")
+                        if (isFavorite) {
+                            Icon(Icons.Default.Favorite, contentDescription = null)
+                        } else {
+                            Icon(Icons.Default.FavoriteBorder, contentDescription = null)
+                        }
+                    }
+                    IconButton(
+                        onClick = {
+                            pokemon.let {
+                                isCaptured = !isCaptured
+                                pokemonViewModel.updateCaptured(it)
+                            }
+                        }
+                    ) {
+                        if (isCaptured) {
+                            Icon(painterResource(id = R.drawable.ic_check_circle), contentDescription = null)
+                        } else {
+                            Icon(painterResource(id = R.drawable.ic_check_circle_outline), contentDescription = null)
+                        }
                     }
                     if (scaffoldState.isConcealed) {
                         IconButton(onClick = { scope.launch { scaffoldState.reveal() } }) {
@@ -72,11 +91,7 @@ fun BackdropScaffoldPokemon(
             )
         },
         backLayerBackgroundColor = pokemonColor(
-            (if (pokemon?.typeOfPokemon == null) {
-                "Fire"
-            } else {
-                pokemon!!.typeOfPokemon!!
-            })
+            (pokemon.typeOfPokemon ?: "Fire")
         ),
         backLayerContent = {
             Box(
@@ -91,8 +106,8 @@ fun BackdropScaffoldPokemon(
                         .size(200.dp)
                     //.graphicsLayer { alpha = textAlphaTarget }
                 )
-                if (pokemon?.name != null) {
-                    PokemonBackLayer(pokemon!!)
+                if (pokemon.name != null) {
+                    PokemonBackLayer(pokemon)
                 }
             }
         },
@@ -100,8 +115,8 @@ fun BackdropScaffoldPokemon(
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                if (pokemon?.name != null) {
-                    PokemonFrontLayer(pokemon!!)
+                if (pokemon.name != null) {
+                    PokemonFrontLayer(pokemon)
                 }
             }
         }

@@ -8,4 +8,6 @@
     <string name="onboarding_section_moves_items">In this section we can browse the different types of Items that are used throughout Pokemon.</string>
     <string name="btn_start">Start</string>
     <string name="btn_upgrade_pro">Upgrade to Pro</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="title_list_of_captured">List Of Captured</string>
 </resources>

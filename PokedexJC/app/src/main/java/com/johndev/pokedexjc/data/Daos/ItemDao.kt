@@ -2,12 +2,14 @@ package com.johndev.pokedexjc.data.Daos
 
 import androidx.room.*
 import com.johndev.pokedexjc.model.entity.ItemEntity
+import com.johndev.pokedexjc.model.entity.PokemonEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ItemDao {
 
     @Query("SELECT * FROM ItemEntity")
-    suspend fun getAll(): List<ItemEntity>
+    fun getAll(): Flow<List<ItemEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(itemEntity: ItemEntity)

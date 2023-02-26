@@ -1,19 +1,17 @@
 package com.johndev.pokedexjc.data.Daos
 
 import androidx.room.*
-import com.johndev.pokedexjc.model.entity.AbilityEntity
-import com.johndev.pokedexjc.model.entity.ItemEntity
-import com.johndev.pokedexjc.model.entity.MoveEntity
 import com.johndev.pokedexjc.model.entity.PokemonEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PokemonDao {
 
     @Query("SELECT * FROM PokemonEntity")
-    suspend fun getAll(): List<PokemonEntity>
+    fun getAll(): Flow<List<PokemonEntity>>
 
-    @Query("SELECT * FROM PokemonEntity WHERE id = :id LIMIT 1")
-    suspend fun findById(id: Int): PokemonEntity?
+    @Query("SELECT DISTINCT * FROM PokemonEntity WHERE id = :id LIMIT 1")
+    fun findById(id: Int): Flow<PokemonEntity>
 
     @Query("SELECT * FROM PokemonEntity WHERE name LIKE :name LIMIT 1")
     suspend fun findByName(name: String): PokemonEntity?
@@ -30,6 +28,7 @@ interface PokemonDao {
     @Query("DELETE FROM PokemonEntity")
     suspend fun deleteAll()
 
-
+    @Update
+    suspend fun update(pokemonEntity: PokemonEntity)
 
 }

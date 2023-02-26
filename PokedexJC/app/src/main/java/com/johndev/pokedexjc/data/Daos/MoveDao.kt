@@ -2,12 +2,13 @@ package com.johndev.pokedexjc.data.Daos
 
 import androidx.room.*
 import com.johndev.pokedexjc.model.entity.MoveEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MoveDao {
 
     @Query("SELECT * FROM MoveEntity")
-    suspend fun getAll(): List<MoveEntity>
+    fun getAll(): Flow<List<MoveEntity>>
 
     @Query("SELECT * FROM MoveEntity WHERE id = :id LIMIT 1")
     suspend fun findById(id: Int): MoveEntity?

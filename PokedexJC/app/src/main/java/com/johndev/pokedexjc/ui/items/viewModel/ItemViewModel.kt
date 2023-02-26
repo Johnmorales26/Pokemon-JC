@@ -8,9 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.johndev.pokedexjc.model.dataItem.ItemRetrofit
 import com.johndev.pokedexjc.model.entity.ItemEntity
+import com.johndev.pokedexjc.model.entity.PokemonEntity
 import com.johndev.pokedexjc.retrofit.Client
 import com.johndev.pokedexjc.ui.items.model.ItemRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -21,17 +23,7 @@ class ItemViewModel : ViewModel() {
 
     val repository = ItemRepository()
 
-    private val _allItems = MutableLiveData<List<ItemEntity>>()
-    val allItems : LiveData<List<ItemEntity>> = _allItems
-
-    fun getItemsByRoom() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getAll()
-            withContext(Dispatchers.Main) {
-                _allItems.value = result
-            }
-        }
-    }
+    val itemsList: Flow<List<ItemEntity>> = repository.getAll()
 
     fun getItem(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {

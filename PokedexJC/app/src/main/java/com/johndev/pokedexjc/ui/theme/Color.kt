@@ -10,10 +10,19 @@ val SecondaryLightColor = Color(0xFF6e7680)
 val SecondaryDarkColor = Color(0xFF1c222b)
 val PrimaryTextColor = Color(0xFF000000)
 val SecondaryTextColor = Color(0xFFffffff)
-val BackgroundColor = Color(0xffffffff)
-val SurfaceColor = Color(0xfff5f5f5)
-val OnBackgroundColor = Color(0xff000000)
-val OnSurfaceColor = Color(0xff000000)
+
+val BackgroundLightColor = Color(0xffffffff)
+val BackgroundDarkColor = Color(0xff252525)
+
+val SurfaceLightColor = Color(0xfff5f5f5)
+val SurfaceDarkColor = Color(0xff4d4d4d)
+
+val OnBackgroundLightColor = Color(0xff000000)
+val OnBackgroundDarkColor = Color(0xffffffff)
+
+val OnSurfaceLightColor = Color(0xff000000)
+val OnSurfaceDarkColor = Color(0xffffffff)
+
 val ErrorColor = Color(0xffb00020)
 val OnErrorColor = Color(0xffffffff)
 

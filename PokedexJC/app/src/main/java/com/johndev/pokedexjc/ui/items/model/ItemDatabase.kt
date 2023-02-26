@@ -11,6 +11,6 @@ class ItemDatabase {
 
     suspend fun insert(itemEntity: ItemEntity) = dao.insert(itemEntity)
 
-    suspend fun getAll() = dao.getAll()
+    fun getAll() = dao.getAll()
 
 }

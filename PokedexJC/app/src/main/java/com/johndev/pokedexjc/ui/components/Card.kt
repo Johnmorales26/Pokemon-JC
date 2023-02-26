@@ -5,10 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,6 +14,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,7 +41,7 @@ fun CardMainMenu(
         Box {
             Column(
                 modifier = Modifier
-                    .background(colorResource(id = R.color.primaryLightColor))
+                    //.background(colorResource(id = R.color.primaryLightColor))
                     .padding(top = 32.dp, bottom = 16.dp, start = 32.dp, end = 32.dp)
             ) {
                 Text(
@@ -253,15 +251,21 @@ fun CardMoves(move: MoveEntity) {
 @Composable
 fun CardItem(itemEntity: ItemEntity) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = Modifier.weight(2f).height(80.dp),
+                modifier = Modifier
+                    .weight(2f)
+                    .height(80.dp),
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(
@@ -275,10 +279,52 @@ fun CardItem(itemEntity: ItemEntity) {
                 )
             }
             AsyncImage(
-                modifier = Modifier.weight(1f).size(80.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .size(80.dp),
                 model = itemEntity.sprites,
                 contentDescription = null
             )
+        }
+    }
+}
+
+@Composable
+fun CardAbility(
+    abilityEntity: AbilityEntity,
+    onClick: (Int) -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp).clickable {
+            onClick(abilityEntity.id!!)
+        }
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier= Modifier.padding(end = 16.dp),
+                painter = painterResource(id = R.drawable.ic_error_outline),
+                contentDescription = null
+            )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = titleCase(abilityEntity.name!!),
+                    style = MaterialTheme.typography.h6,
+                    maxLines = 2
+                )
+                Text(
+                    text = abilityEntity.effect!!,
+                    style = MaterialTheme.typography.body1,
+                    textAlign = TextAlign.Justify,
+                    maxLines = 2
+                )
+            }
         }
     }
 }

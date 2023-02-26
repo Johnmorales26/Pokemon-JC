@@ -4,17 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.johndev.pokedexjc.model.entity.PokemonEntity
 import com.johndev.pokedexjc.ui.components.PokeDexCard
-import com.johndev.pokedexjc.ui.pokedex.viewModel.PokedexViewModel
 
 @Composable
-fun PokedexList(pokedexViewModel: PokedexViewModel, onIdSelected: (Int) -> Unit) {
-    val pokemonList: List<PokemonEntity> by pokedexViewModel.allPokemon.observeAsState(initial = listOf())
+fun PokedexList(pokemonList: List<PokemonEntity>, onIdSelected: (Int) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(5.dp),

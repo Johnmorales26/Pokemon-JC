@@ -70,6 +70,11 @@ class MainActivity : ComponentActivity() {
                                 navigationController = navigationController
                             )
                         }
+                        composable(Routes.AbilityScreen.route) {
+                            AbilityScreen(
+                                navigationController = navigationController
+                            )
+                        }
                         composable(
                             Routes.DetailsPokemonScreen.route,
                             arguments = listOf(navArgument("idPokemon") {
@@ -79,6 +84,21 @@ class MainActivity : ComponentActivity() {
                             DetailsPokemonScreen(
                                 navigationController,
                                 backStaclEntry.arguments?.getInt("idPokemon") ?: 0
+                            )
+                        }
+                        composable(Routes.FavoritesScreen.route) {
+                            FavoritesScreen(
+                                navigationController = navigationController
+                            )
+                        }
+                        composable(Routes.CapturedScreen.route) {
+                            CapturedScreen(
+                                navigationController = navigationController
+                            )
+                        }
+                        composable(Routes.AbilityScreen.route) {
+                            AbilityScreen(
+                                navigationController = navigationController
                             )
                         }
                     }

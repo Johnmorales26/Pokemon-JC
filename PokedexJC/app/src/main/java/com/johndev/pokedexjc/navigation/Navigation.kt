@@ -3,28 +3,36 @@ package com.johndev.pokedexjc.navigation
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Handler
+import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
 import androidx.navigation.NavHostController
 import com.johndev.pokedexjc.R
+import com.johndev.pokedexjc.data.ViewModels.abilityViewModel
 import com.johndev.pokedexjc.data.ViewModels.itemViewModel
 import com.johndev.pokedexjc.data.ViewModels.movesViewModel
 import com.johndev.pokedexjc.data.ViewModels.pokemonViewModel
+import com.johndev.pokedexjc.model.entity.AbilityEntity
 import com.johndev.pokedexjc.model.entity.ItemEntity
+import com.johndev.pokedexjc.model.entity.MoveEntity
+import com.johndev.pokedexjc.model.entity.PokemonEntity
+import com.johndev.pokedexjc.ui.ability.viewModel.AbilityViewModel
 import com.johndev.pokedexjc.ui.components.*
 import com.johndev.pokedexjc.ui.items.viewModel.ItemViewModel
 import com.johndev.pokedexjc.ui.moves.viewModel.MovesList
@@ -32,17 +40,17 @@ import com.johndev.pokedexjc.ui.moves.viewModel.MovesViewModel
 import com.johndev.pokedexjc.ui.pokedex.PokedexList
 import com.johndev.pokedexjc.ui.pokedex.viewModel.PokedexViewModel
 import com.johndev.pokedexjc.ui.theme.*
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 @Composable
 fun OnboardingScreen_One(navigationController: NavHostController) {
     var counter by remember { mutableStateOf(0) }
+    var isVisibleStart by remember { mutableStateOf(false) }
+    var isVisibleLoading by remember { mutableStateOf(true) }
     getPokemonsRetrofit(pokemonViewModel)
     getMovesRetrofit(movesViewModel)
     getItemsRetrofit(itemViewModel)
+    getAbilitiesRetrofit(abilityViewModel)
     LocalContext.current
     val description = StringBuilder()
         .append(stringResource(id = R.string.app_name))
@@ -51,7 +59,6 @@ fun OnboardingScreen_One(navigationController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Fire)
             .padding(start = 16.dp, end = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -83,31 +90,37 @@ fun OnboardingScreen_One(navigationController: NavHostController) {
                 text = "Let's get started!",
                 style = MaterialTheme.typography.subtitle1
             )
-            if (counter >= 100) {
+            AnimatedVisibility(isVisibleStart) {
                 FabCommon(
                     painterRes = R.drawable.ic_arrow_forward
                 ) {
                     navigationController.navigate(Routes.OnboardingStart.route)
                 }
-            } else {
-                CircularProgressIndicator(
-                    color = SecondaryColor,
-                )
-                when (counter) {
-                    in 0..25 -> {
-                        Text(text = "${counter}% Download Pokemon")
-                    }
-                    in 26..45 -> {
-                        Text(text = "${counter}% Download Items")
-                    }
-                    in 46..65 -> {
-                        Text(text = "${counter}% Download Moves")
-                    }
-                    in 66..85 -> {
-                        Text(text = "${counter}% Download Abilities")
-                    }
-                    else -> {
-                        Text(text = "${counter}% Configuring the Pókedex")
+            }
+            AnimatedVisibility(visible = isVisibleLoading) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator(
+                        color = SecondaryColor,
+                    )
+                    when (counter) {
+                        in 0..25 -> {
+                            Text(text = "${counter}% Download Pokemon")
+                        }
+                        in 26..45 -> {
+                            Text(text = "${counter}% Download Items")
+                        }
+                        in 46..65 -> {
+                            Text(text = "${counter}% Download Moves")
+                        }
+                        in 66..85 -> {
+                            Text(text = "${counter}% Download Abilities")
+                        }
+                        else -> {
+                            Text(text = "${counter}% Configuring the Pókedex")
+                        }
                     }
                 }
             }
@@ -118,6 +131,8 @@ fun OnboardingScreen_One(navigationController: NavHostController) {
                 {
                     counter += 1
                     println("Counter $counter")
+                    if (counter == 100) isVisibleStart = true
+                    if (counter == 100) isVisibleLoading = false
                 },
                 800
             )
@@ -132,8 +147,7 @@ fun OnboardingScreen_Two(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Fire),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -191,7 +205,6 @@ fun saveIsFirstStart(sharedPreferences: SharedPreferences, isFirstStart: Boolean
 @Composable
 fun HomeScreen(navigationController: NavHostController) {
     var openDialog by remember { mutableStateOf(false) }
-    findAllData()
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -201,6 +214,8 @@ fun HomeScreen(navigationController: NavHostController) {
                 0 -> navigationController.navigate(Routes.PokedexScreen.route)
                 //  Launch Moves
                 1 -> navigationController.navigate(Routes.MovesScreen.route)
+                //  Launch Ability
+                2 -> navigationController.navigate(Routes.AbilityScreen.route)
                 //  Launch Moves
                 3 -> navigationController.navigate(Routes.ItemScreen.route)
                 else -> openDialog = true
@@ -212,34 +227,149 @@ fun HomeScreen(navigationController: NavHostController) {
     }
 }
 
+
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun PokedexScreen(navigationController: NavHostController) {
+    val radioSortBy = listOf(
+        "ID (# / Number)", "Alphabetical (A - Z)", "Total", "PS", "Attack", "Defense",
+        "Special Attack", "Special Defense", "Speed"
+    )
+    val radioOrder = listOf("Upward", "Falling")
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioSortBy[0]) }
+    val (selectedOptionOrder, onOptionSelectedOrder) = remember { mutableStateOf(radioOrder[0]) }
+    val pokemonState by pokemonViewModel.getPokemonListOrdenate(selectedOption, selectedOptionOrder)
+        .collectAsState(initial = null)
+    //val pokemonListState: List<PokemonEntity> by pokemonViewModel.pokemonList.collectAsState(initial = emptyList())
+    val skipHalfExpanded by remember { mutableStateOf(false) }
+    val state = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = skipHalfExpanded
+    )
+    val scope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            TopAppBarActivities("Pokedex") {
-                navigationController.navigate(Routes.HomeScreen.route)
+            TopAppBarActivities(
+                titleAppBar = "Pokedex",
+                isActionsVisible = true
+            ) {
+                when (it) {
+                    0 -> navigationController.navigate(Routes.HomeScreen.route)
+                    1 -> navigationController.navigate(Routes.FavoritesScreen.route)
+                    2 -> navigationController.navigate(Routes.CapturedScreen.route)
+                }
             }
         },
         modifier = Modifier.fillMaxSize(),
-        backgroundColor = BackgroundColor,
+        //backgroundColor = BackgroundColor,
         content = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp)
-            ) {
-                PokedexList(pokemonViewModel) {
-                    navigationController.navigate(Routes.DetailsPokemonScreen.createRoute(it))
+            ModalBottomSheetLayout(
+                sheetState = state,
+                sheetContent = {
+                    Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)) {
+                        Text(
+                            text = "Sort by...",
+                            style = MaterialTheme.typography.h6
+                        )
+                        Column(modifier = Modifier.selectableGroup()) {
+                            radioSortBy.forEach { text ->
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .height(40.dp)
+                                        .selectable(
+                                            selected = (text == selectedOption),
+                                            onClick = { onOptionSelected(text) },
+                                            role = Role.RadioButton
+                                        )
+                                        .padding(horizontal = 16.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RadioButton(
+                                        selected = (text == selectedOption),
+                                        onClick = null // null recommended for accessibility with screenreaders
+                                    )
+                                    Text(
+                                        text = text,
+                                        style = MaterialTheme.typography.body1.merge(),
+                                        modifier = Modifier.padding(start = 16.dp)
+                                    )
+                                }
+                            }
+                        }
+                        Text(
+                            text = "Order",
+                            style = MaterialTheme.typography.h6
+                        )
+                        Row(modifier = Modifier.selectableGroup()) {
+                            radioOrder.forEach { text ->
+                                Row(
+                                    Modifier
+                                        .weight(1f)
+                                        .height(40.dp)
+                                        .selectable(
+                                            selected = (text == selectedOptionOrder),
+                                            onClick = { onOptionSelectedOrder(text) },
+                                            role = Role.RadioButton
+                                        )
+                                        .padding(horizontal = 16.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    RadioButton(
+                                        selected = (text == selectedOptionOrder),
+                                        onClick = null // null recommended for accessibility with screenreaders
+                                    )
+                                    Text(
+                                        text = text,
+                                        style = MaterialTheme.typography.body1.merge(),
+                                        modifier = Modifier.padding(start = 16.dp)
+                                    )
+                                }
+                            }
+                        }
+                        /*Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                pokemonListState.sortedByDescending { it.id }
+                                //pokemonViewModel.orderPokemon(selectedOption, selectedOptionOrder)
+                            }
+                        ) {
+                            Text(text = "Apply")
+                        }*/
+                    }
+                }) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp)
+                ) {
+                    pokemonState?.let {
+                        PokedexList(it) {
+                            navigationController.navigate(Routes.DetailsPokemonScreen.createRoute(it))
+                        }
+                    }
                 }
             }
-        }
+        },
+        floatingActionButton = {
+            AnimatedVisibility(!state.isVisible) {
+                FloatingActionButton(onClick = { scope.launch { state.show() } }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_list),
+                        contentDescription = null
+                    )
+                }
+            }
+        },
+        floatingActionButtonPosition = FabPosition.Center
     )
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MovesScreen(navigationController: NavHostController) {
+    val moveListState: List<MoveEntity> by movesViewModel.movesList.collectAsState(initial = emptyList())
     Scaffold(
         topBar = {
             TopAppBarActivities("Moves") {
@@ -247,14 +377,14 @@ fun MovesScreen(navigationController: NavHostController) {
             }
         },
         modifier = Modifier.fillMaxSize(),
-        backgroundColor = BackgroundColor,
+        //backgroundColor = BackgroundColor,
         content = {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp)
             ) {
-                MovesList(movesViewModel)
+                MovesList(moveListState)
             }
         }
     )
@@ -262,13 +392,17 @@ fun MovesScreen(navigationController: NavHostController) {
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DetailsPokemonScreen(navigationController: NavHostController, idPokemon: Int) {
-    pokemonViewModel.findById(idPokemon)
+fun DetailsPokemonScreen(navigationController: NavHostController, pokemonId: Int) {
+    val pokemonState by pokemonViewModel.getPokemonById(pokemonId).collectAsState(initial = null)
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         backgroundColor = colorResource(id = R.color.primaryColor),
         content = {
-            BackdropScaffoldPokemon(navigationController)
+            if (pokemonState != null) {
+                BackdropScaffoldPokemon(pokemonState!!, navigationController)
+            } else {
+                CircularProgressIndicator()
+            }
         }
     )
 }
@@ -276,7 +410,7 @@ fun DetailsPokemonScreen(navigationController: NavHostController, idPokemon: Int
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ItemScreen(navigationController: NavHostController) {
-    val itemsList: List<ItemEntity> by itemViewModel.allItems.observeAsState(initial = listOf())
+    val itemsListState: List<ItemEntity> by itemViewModel.itemsList.collectAsState(initial = emptyList())
     Scaffold(
         topBar = {
             TopAppBarActivities("Items") {
@@ -284,14 +418,14 @@ fun ItemScreen(navigationController: NavHostController) {
             }
         },
         modifier = Modifier.fillMaxSize(),
-        backgroundColor = BackgroundColor,
+        //backgroundColor = BackgroundColor,
         content = {
             LazyColumn(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp)
             ) {
-                items(itemsList.size) { index ->
-                    val item = itemsList[index]
+                items(itemsListState.size) { index ->
+                    val item = itemsListState[index]
                     CardItem(
                         itemEntity = item
                     )
@@ -301,10 +435,132 @@ fun ItemScreen(navigationController: NavHostController) {
     )
 }
 
-private fun findAllData() {
-    pokemonViewModel.getPokemonsByRoom()
-    movesViewModel.getMoveByRoom()
-    itemViewModel.getItemsByRoom()
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun AbilityScreen(navigationController: NavHostController) {
+    val abilityListState: List<AbilityEntity> by abilityViewModel.abilityList.collectAsState(initial = emptyList())
+    Scaffold(
+        topBar = {
+            TopAppBarActivities("Abilities") {
+                navigationController.navigate(Routes.HomeScreen.route)
+            }
+        },
+        modifier = Modifier.fillMaxSize(),
+        //backgroundColor = BackgroundColor,
+        content = {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+            ) {
+                items(abilityListState.size) { index ->
+                    val item = abilityListState[index]
+                    CardAbility(
+                        abilityEntity = item
+                    ) {
+
+                    }
+                }
+            }
+        }
+    )
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun FavoritesScreen(navigationController: NavHostController) {
+    val pokemonListState: List<PokemonEntity> by pokemonViewModel.pokemonFavoriteList.collectAsState(
+        initial = emptyList()
+    )
+    val context = LocalContext.current
+    Scaffold(
+        topBar = {
+            TopAppBarExtra(
+                titleRes = R.string.title_favorites,
+                onNavigationClick = { navigationController.navigate(Routes.PokedexScreen.route) },
+                onDeleteAll = {
+                    if (pokemonListState.isNotEmpty()) pokemonListState.map {
+                        pokemonViewModel.updateFavorite(
+                            it
+                        )
+                    }
+                    else Toast.makeText(context, "Your favorites are empty", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            )
+        },
+        content = {
+            if (pokemonListState.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp)
+                ) {
+                    PokedexList(pokemonListState) {
+                        navigationController.navigate(Routes.DetailsPokemonScreen.createRoute(it))
+                    }
+                }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 16.dp, end = 16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    AnnouncementFavoritesEmpty()
+                }
+            }
+        }
+    )
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun CapturedScreen(navigationController: NavHostController) {
+    val pokemonListState: List<PokemonEntity> by pokemonViewModel.pokemonCapturedList.collectAsState(
+        initial = emptyList()
+    )
+    val pokemonListSize: Int by pokemonViewModel.pokemonListSize.collectAsState(initial = 0)
+    val context = LocalContext.current
+    Scaffold(
+        topBar = {
+            TopAppBarExtra(
+                titleRes = R.string.title_list_of_captured,
+                isCaptured = true,
+                percentText = StringBuilder().append(pokemonListSize).append("%").toString(),
+                onNavigationClick = { navigationController.navigate(Routes.PokedexScreen.route) }
+            ) {
+                if (pokemonListState.isNotEmpty()) pokemonListState.map {
+                    pokemonViewModel.updateCaptured(it)
+                }
+                else Toast.makeText(context, "Your captured list are empty", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        },
+        content = {
+            if (pokemonListState.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp)
+                ) {
+                    PokedexList(pokemonListState) {
+                        navigationController.navigate(Routes.DetailsPokemonScreen.createRoute(it))
+                    }
+                }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 16.dp, end = 16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    AnnouncementCapturedEmpty()
+                }
+            }
+        }
+    )
 }
 
 @OptIn(DelicateCoroutinesApi::class)
@@ -333,6 +589,16 @@ private fun getMovesRetrofit(movesViewModel: MovesViewModel) {
         (1..918).forEach {
             //(1..100).forEach {
             movesViewModel.getMoveRetrofit(it)
+        }
+    }
+}
+
+@OptIn(DelicateCoroutinesApi::class)
+private fun getAbilitiesRetrofit(abilityViewModel: AbilityViewModel) {
+    GlobalScope.launch(Dispatchers.IO) {
+        (1..358).forEach {
+            //(1..100).forEach {
+            abilityViewModel.getAbility(it)
         }
     }
 }
