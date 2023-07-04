@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="common_padding_default">16dp</dimen>
+    <dimen name="common_padding_min">8dp</dimen>
+    <dimen name="common_padding_nano">4dp</dimen>
+    <dimen name="common_padding_micro">2dp</dimen>
+
+    <dimen name="home_pokemon_card_height">130dp</dimen>
+    <dimen name="home_pokemon_icon_rectangle_small_size">80dp</dimen>
+    <dimen name="home_pokemon_icon_pokeball_size">200dp</dimen>
+    <dimen name="home_pokemon_icon_chip_size">18dp</dimen>
+</resources>
